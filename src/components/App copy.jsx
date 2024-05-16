@@ -1,14 +1,16 @@
 import React, { useState, useRef } from 'react';
 import { PDFDocument} from 'pdf-lib';
-import Files from './files/Files';
+
 import style from './app.module.css';
+
+
 
 export const App =() =>{
   const [files, setFiles] = useState([]);
   const [mergedPDF, setMergedPDF] = useState(null);
   const [error, setError] = useState(null);
   const fileInputRef = useRef(null);
-
+console.log(files);
   const handleFileChange = (event) => {
     if(event.target.files.length<2){
       return
@@ -18,6 +20,7 @@ export const App =() =>{
     setFiles((prevFiles) => [...prevFiles, ...newFiles]);
     };
     
+
   const openFileInput = () => {
     fileInputRef.current.click();
   };
@@ -37,14 +40,17 @@ export const App =() =>{
       setError('Виберіть принаймні два файли PDF.');
       return;
     }
+
     try {
       const mergedDoc = await PDFDocument.create();
+
       for (const file of files) {
         const pdfDoc = await PDFDocument.load(await file.arrayBuffer());
         const copiedPages = await mergedDoc.copyPages(pdfDoc, pdfDoc.getPageIndices());
         copiedPages.forEach((page) => mergedDoc.addPage(page));
       }
       const mergedPDFBytes = await mergedDoc.save();
+
       setMergedPDF(new Blob([mergedPDFBytes], { type: 'application/pdf' }));
       setError(null);
       setFiles([]);
@@ -55,32 +61,43 @@ export const App =() =>{
   let d = new Date().getTime()
   return (
     <div className={style.container}>
-      <div className={style.card}>
-      <h2 className={style.titl}>Об'єднання PDF файлів</h2>
-        <input
-          type="file"
-          onChange={handleFileChange}
-          multiple
-          accept='.pdf'
-          style={{ display: 'none' }}
-          ref={fileInputRef}
-        />
-        <button className={style.btn}onClick={openFileInput}>Виберіть PDF файли</button>
-        {files.length>1 && <button className={style.btn} onClick={mergePDFs}>Об'єднати PDF файли</button>}
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-        {mergedPDF && (
+    <div className={style.card}>
+      <h1>Об'єднання PDF файлів</h1>
+      <input
+        type="file"
+        onChange={handleFileChange}
+        multiple
+        accept='.pdf'
+        style={{ display: 'none' }}
+        ref={fileInputRef}
+      />
+      <button className={style.btn}onClick={openFileInput}>Виберіть PDF файли</button>
+      {files.length>1 && <button className={style.btn} onClick={mergePDFs}>Об'єднати PDF файли</button>}
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {mergedPDF && (
         <div className={style.download}>
-          <a className={style.downloadLink } href={URL.createObjectURL(mergedPDF)} download={`${d}`}>
-            Завантажити PDF
-          </a>
+        <a className={style.downloadLink } href={URL.createObjectURL(mergedPDF)} download={`${d}`}>
+          Завантажити PDF
+        </a>
         </div>
       )}
-      <Files
-        files={files}
-        removeFile={removeFile}
-        moveFile={moveFile}
-      />
+      <div className={style.preview}>
+      <ul>
+        {files.map((file, index) => (
+          <li className={style.list}key={index}>
+            {file.name}{' '}
+            <div className={style.previewRemove} onClick={() => removeFile(index)}>&#10006;</div>
+            {index > 0 && (
+              <div className={style.arrow_up} onClick={() => moveFile(index, index - 1)}>&#11014;</div>
+            )}
+            {index < files.length - 1 && (
+              <div className={style.arrow_down} onClick={() => moveFile(index, index + 1)}>&#11015;</div>
+            )}
+          </li>
+        ))}
+      </ul>
       </div>
+    </div>
     </div>
   );
 };

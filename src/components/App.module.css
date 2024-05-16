@@ -40,8 +40,6 @@ body {
     margin-right: 1rem;
 }
 
-
-
 .btn:active {
     box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.3);
 }
@@ -51,30 +49,65 @@ body {
     opacity: 0.8;
 }
 
+.list{
+    height: 26px;
+    display: flex;
+    border-bottom: 2px solid #42b983;
+    font-weight: 700;
+    color: #42b983;
+    margin: 5px;
+    &:hover {
+            opacity: 0.8;
+    }
 
+}
 
 
 .previewRemove {
-    width: 30px;
-    color: rgb(224, 15, 15);
+    width: 20px;
+    height: 20px;
+    color: #42b983;
     font-weight: bold;
     cursor: pointer;
-    margin: 0 10px;
+    margin: 0 5px;
+    border-radius: 99px;
+    font-weight: 700;
+    border: 2px solid #42b983;
+    &:hover {
+        color: #ee1111;
+    }
 }
 
 
-.list{
-    display: flex;
-    border-bottom: 2px solid #42b983;
-}
 
-.arrow{
-    width: 30px;
-    color: rgb(32, 15, 224);
-    font-weight: bold;
+
+.arrow_up{
+    width: 20px;
+    height: 20px;
+    color: #42b983;
+    font-weight: 700;;
     cursor: pointer;
-    margin: 0 10px;
+    margin: 0 5px;
+    border: 2px solid #42b983;
+    border-radius: 99px;
+    &:hover {
+        color: #2b18d7;
+    }
 }
+.arrow_down{
+    width: 20px;
+    height: 20px;
+    color: #42b983;
+    font-weight: 700;;
+    cursor: pointer;
+    margin: 0 5px;
+    border: 2px solid #42b983;
+    border-radius: 99px;
+    &:hover {
+        color: #dfe223;
+    }
+}
+
 .download{
     color:#42b983 ;
     margin: 20px;
