@@ -56,7 +56,7 @@ export const App =() =>{
   return (
     <div className={style.container}>
       <div className={style.card}>
-      <h2 className={style.titl}>Об'єднання PDF файлів</h2>
+      <h1>Об'єднання PDF файлів</h1>
         <input
           type="file"
           onChange={handleFileChange}
